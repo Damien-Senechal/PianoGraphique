@@ -13,8 +13,11 @@ class Scene extends Phaser.Scene{
             'Press Space to see Yves',
             'Press A to listen Yves'
         ];
+        let text1 = 'Hello World !'
+        let textDisplay1 = this.add.text(40, 40, text1)
 
         let text = this.add.text(10, 10, textKeys, {font : '32px Courier', fill : '#00ff00'})
+        textDisplay1.setAlpha(0)
 
         // Set scale for objects
         yvesVideo.setScale(0.5)
@@ -23,6 +26,8 @@ class Scene extends Phaser.Scene{
         // Make objects invisible
         yvesImg.setAlpha(0)
         yvesVideo.setAlpha(0)
+
+
 
         if (this.sound.locked)
         {
@@ -50,8 +55,10 @@ class Scene extends Phaser.Scene{
         }, this);
     }
 
-    initKeyboard(){
-
+    displayText(textToDisplay){
+        for(let i = 0; i < text.length; i++){
+            console.log(textToDisplay[i])
+        }
     }
 
     update(){
