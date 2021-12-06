@@ -1,5 +1,5 @@
 let gameConfig = {
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     width: 960,
     height: 540,
     backgroundColor: '#000000',
