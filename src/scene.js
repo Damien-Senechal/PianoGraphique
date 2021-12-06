@@ -1,10 +1,12 @@
 class Scene extends Phaser.Scene{
-    preload(){
+    preload()
+    {
         this.load.image('yvesImg', 'assets/img/yves.jpg')
         this.load.video('yvesVid', 'assets/video/yves.mp4', 'loadeddata', false, false)
     }
 
-    create(){
+    create()
+    {
 
         // Add variables
         let yvesVideo = this.add.video(400,300, 'yvesVid')
@@ -61,7 +63,8 @@ class Scene extends Phaser.Scene{
         }
     }
 
-    update(){
+    update()
+    {
 
     }
 }
