@@ -127,8 +127,8 @@ class Scene extends Phaser.Scene{
                 chairSpawn = false
             }
             else{
-                this.smoke(360, 260, 10)
                 this.chair = this.add.image(340, 200, 'chair').setOrigin(0,0)
+                this.smoke(360, 260, 10)
                 bam1.play();
                 chairSpawn = true
             }
@@ -141,8 +141,8 @@ class Scene extends Phaser.Scene{
                 tableSpawn = false
             }
             else{
-                this.smoke(550, 360, 30)
                 this.tablee = this.add.image(500, 320, 'table').setOrigin(0,0)
+                this.smoke(550, 360, 30)
                 bam2.play();
                 tableSpawn = true
             }
@@ -155,8 +155,8 @@ class Scene extends Phaser.Scene{
                 ghostSpawn = false
             }
             else{
-                this.smoke(200, 320, 20)
                 this.ghost = this.add.sprite(200, 300, 'ghost1').play('idle');
+                this.smoke(200, 320, 20)
                 ghost.play();
                 ghostSpawn = true
             }
