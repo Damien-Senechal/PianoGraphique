@@ -2,6 +2,7 @@ let gameConfig = {
     type: Phaser.CANVAS,
     width: 768,
     height: 768,
+    pixelArt: true,
     backgroundColor: '#000000',
     parent: 'game',
     physics: {
