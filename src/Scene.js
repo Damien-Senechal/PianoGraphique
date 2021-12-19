@@ -32,6 +32,7 @@ class Scene extends Phaser.Scene{
         this.load.image('room', 'assets/img/room.png')
         this.load.image('chair', 'assets/img/chair.png')
         this.load.image('table', 'assets/img/table.png')
+        this.load.image('lightOff', 'assets/img/lightOff.png')
         this.load.image('smokeW1', 'assets/fx/smoke1white.png')
         this.load.image('smokeW2', 'assets/fx/smoke2white.png')
         this.load.image('smokeW3', 'assets/fx/smoke3white.png')
@@ -54,6 +55,7 @@ class Scene extends Phaser.Scene{
         let chairSpawn = false
         let tableSpawn = false
         let ghostSpawn = false
+        let lightOff = false
 
         this.anims.create({
             key: 'idle',
@@ -125,17 +127,13 @@ class Scene extends Phaser.Scene{
             }
         }, this);
         this.input.keyboard.on('keydown-Q', function () {
-            if(ghostSpawn){
-                this.smoke(200, 320, 20)
-                this.ghost.destroy()
-                bam3.play();
-                ghostSpawn = false
+            if(lightOff){
+                this.light.destroy()
+                lightOff = false
             }
             else{
-                this.ghost = this.add.sprite(200, 300, 'ghost1').play('idle');
-                this.smoke(200, 320, 20)
-                ghost.play();
-                ghostSpawn = true
+                this.light = this.add.sprite(0, 0, 'lightOff').setOrigin(0,0)
+                lightOff = true
             }
         }, this);
     }
