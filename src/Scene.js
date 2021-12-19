@@ -1,66 +1,29 @@
 class Scene extends Phaser.Scene{
 
     smoke(x,y,ecart){
-        let particles4 = this.add.particles('smokeB1');
-        particles4.createEmitter({
-            speed: 100,
-            lifespan: { min: 800, max: 900 },
-            maxParticles: 5,
-            alpha: 1,
-            scale:.5,
-            x: { min: x-ecart, max: x+ecart },
-            y: { min: y-ecart, max: y+ecart }
-        });
-        let particles5 = this.add.particles('smokeB2');
-        particles5.createEmitter({
-            speed: 100,
-            lifespan: { min: 800, max: 900 },
-            maxParticles: 5,
-            alpha: 1,
-            scale:.5,
-            x: { min: x-ecart, max: x+ecart },
-            y: { min: y-ecart, max: y+ecart }
-        });
-        let particles6 = this.add.particles('smokeB3');
-        particles6.createEmitter({
-            speed: 100,
-            lifespan: { min: 800, max: 900 },
-            maxParticles: 5,
-            alpha: 1,
-            scale:.5,
-            x: { min: x-ecart, max: x+ecart },
-            y: { min: y-ecart, max: y+ecart }
-        });
-        let particles = this.add.particles('smokeW1');
-        particles.createEmitter({
-            speed: 100,
-            lifespan: { min: 800, max: 900 },
-            maxParticles: 10,
-            alpha: 1,
-            scale:.5,
-            x: { min: x-ecart, max: x+ecart },
-            y: { min: y-ecart, max: y+ecart }
-        });
-        let particles2 = this.add.particles('smokeW2');
-        particles2.createEmitter({
-            speed: 100,
-            lifespan: { min: 800, max: 900 },
-            maxParticles: 10,
-            alpha: 1,
-            scale:.5,
-            x: { min: x-ecart, max: x+ecart },
-            y: { min: y-ecart, max: y+ecart }
-        });
-        let particles3 = this.add.particles('smokeW3');
-        particles3.createEmitter({
-            speed: 100,
-            lifespan: { min: 800, max: 900 },
-            maxParticles: 10,
-            alpha: 1,
-            scale:.5,
-            x: { min: x-ecart, max: x+ecart },
-            y: { min: y-ecart, max: y+ecart }
-        });
+        for (let i=1; i<=6; i++){
+            let L
+            let number
+            if(i<=3){
+                L="B"
+                number = 5
+            }
+            else{
+                L="W"
+                number =10
+            }
+
+            let particles = this.add.particles('smoke'+L+(i%3+1))
+            particles.createEmitter({
+                speed: 100,
+                lifespan: { min: 800, max: 900 },
+                maxParticles: number,
+                alpha: 1,
+                scale:.5,
+                x: { min: x-ecart, max: x+ecart },
+                y: { min: y-ecart, max: y+ecart }
+            });
+        }
     }
 
     preload()
@@ -148,6 +111,20 @@ class Scene extends Phaser.Scene{
             }
         }, this);
         this.input.keyboard.on('keydown-E', function () {
+            if(ghostSpawn){
+                this.smoke(200, 320, 20)
+                this.ghost.destroy()
+                bam3.play();
+                ghostSpawn = false
+            }
+            else{
+                this.ghost = this.add.sprite(200, 300, 'ghost1').play('idle');
+                this.smoke(200, 320, 20)
+                ghost.play();
+                ghostSpawn = true
+            }
+        }, this);
+        this.input.keyboard.on('keydown-Q', function () {
             if(ghostSpawn){
                 this.smoke(200, 320, 20)
                 this.ghost.destroy()
