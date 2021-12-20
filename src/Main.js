@@ -1,6 +1,6 @@
 let gameConfig = {
     type: Phaser.CANVAS,
-    width: 768,
+    width: 1000,
     height: 768,
     pixelArt: true,
     backgroundColor: '#000000',
