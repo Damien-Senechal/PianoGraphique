@@ -557,6 +557,11 @@ class Scene extends Phaser.Scene{
 
             this.input.keyboard.on('keydown-J', function () {
                 if (carpetMonster) {
+
+                    if (carpetRoll) {
+                        this.carpetR.destroy()
+                    }
+                    carpetRoll = false
                     tapis1.play();
                     this.carpet.destroy()
                     carpetMonster = false
@@ -594,6 +599,10 @@ class Scene extends Phaser.Scene{
 
             this.input.keyboard.on('keydown-L', function () {
                 if (carpetRoll) {
+                    if (carpetMonster) {
+                        this.carpet.destroy()
+                    }
+                    carpetMonster = false
                     tapis2.play();
                     this.tapis = this.add.sprite(380, 300, 'tapis').setOrigin(0, 0).setDepth(1)
                     this.carpetR.destroy()
