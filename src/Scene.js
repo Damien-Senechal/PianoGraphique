@@ -249,8 +249,10 @@ class Scene extends Phaser.Scene{
         let curtainC = this.sound.add('curtainC', {volume: .5});
         let tvbs = this.sound.add('tvbs', {volume: .5});
 
-        let textKeys = [];
-        let text = this.add.text(400, 400, textKeys, {font : '32px Courier', fill : '#ffffff'})
+        let textKeys = [
+            'A','Z','E','R','T','Y','U','I','O','P','Q','S','D','F','G','H','J','K','L','M','W','X'
+        ];
+        let text = this.add.text(370, 384, textKeys, {font : '32px Courier', fill : '#ffffff'})
 
         if (this.sound.locked)
         {
@@ -261,6 +263,8 @@ class Scene extends Phaser.Scene{
             this.sound.once('unlocked', function ()
             {
                 me.fond.destroy()
+                text.x = 10
+                text.y = 10
                 text.setText(textKeys);
             });
         }
