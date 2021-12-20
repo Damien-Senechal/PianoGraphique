@@ -29,12 +29,21 @@ class Scene extends Phaser.Scene{
 
     preload()
     {
+        this.load.video('yvesVid', 'assets/video/yves.mp4', 'loadeddata', false, false)
+
 
         this.load.image('room', 'assets/img/room.png')
         this.load.image('chair', 'assets/img/chair.png')
         this.load.image('table', 'assets/img/table.png')
         this.load.image('opendoor', 'assets/img/opendoor.png')
         this.load.image('lightOff', 'assets/img/lightOff.png')
+        this.load.image('hole1', 'assets/img/trappe1.png')
+        this.load.image('hole2', 'assets/img/trappe2.png')
+        this.load.image('wardrobe', 'assets/img/armoire.png')
+        this.load.image('wardrobe2', 'assets/img/armoire2.png')
+        this.load.image('tv', 'assets/img/tv.png')
+        this.load.image('windowGuy', 'assets/img/guy.png')
+
 
         this.load.image('smokeW1', 'assets/fx/smoke1white.png')
         this.load.image('smokeW2', 'assets/fx/smoke2white.png')
@@ -43,9 +52,11 @@ class Scene extends Phaser.Scene{
         this.load.image('smokeB2', 'assets/fx/smoke2black.png')
         this.load.image('smokeB3', 'assets/fx/smoke3black.png')
 
-        this.load.audio('bam1', 'assets/sound/bam1.mp3')
-        this.load.audio('bam2', 'assets/sound/bam2.mp3')
-        this.load.audio('bam3', 'assets/sound/bam3.mp3')
+
+        for (let i=1;i<=5;i++){
+            this.load.audio('bam'+i, 'assets/sound/bam'+i+'.mp3')
+        }
+        //this.load.audio('bam3', 'assets/sound/bam3.mp3')
         this.load.audio('ambiance', 'assets/sound/ambiance.wav')
         this.load.audio('off', 'assets/sound/switch_off.mp3')
         this.load.audio('on', 'assets/sound/switch_on.mp3')
@@ -53,6 +64,10 @@ class Scene extends Phaser.Scene{
         this.load.audio('snake', 'assets/sound/snake.mp3')
         this.load.audio('openD', 'assets/sound/openD.mp3')
         this.load.audio('closeD', 'assets/sound/closeD.mp3')
+        this.load.audio('openH', 'assets/sound/openH.mp3')
+        this.load.audio('closeH', 'assets/sound/closeH.mp3')
+        this.load.audio('monster', 'assets/sound/monster.wav')
+
 
 
         for (let i=1;i<=10;i++){
@@ -67,6 +82,7 @@ class Scene extends Phaser.Scene{
     {
         this.add.image(0, 0, 'room').setOrigin(0,0).setDepth(0)
         this.snake1 = this.add.sprite(400, 175, 'snake1').setOrigin(0,0).setDepth(1)
+        this.hole1 = this.add.sprite(100, 350, 'hole1').setOrigin(0,0).setDepth(1)
 
         let chairSpawn = false
         let tableSpawn = false
@@ -74,6 +90,12 @@ class Scene extends Phaser.Scene{
         let lightOff = false
         let snakeSpawn = false
         let doorOpen = false
+        let holeOpen = false
+        let wardrobeOpen = false
+        let wardrobeMonster = false
+        let tvSpawn = false
+        let yves = false
+        let windowGuySpawn = false
 
         this.anims.create({
             key: 'idle',
@@ -113,6 +135,8 @@ class Scene extends Phaser.Scene{
 
         let bam1 = this.sound.add('bam1', {volume: 0.5});
         let bam2 = this.sound.add('bam2', {volume: 0.5});
+        let bam4 = this.sound.add('bam4', {volume: 0.5});
+        let bam5 = this.sound.add('bam5', {volume: 0.5});
         let bam3 = this.sound.add('bam3', {volume: 0.5});
         let ghost = this.sound.add('ghost', {volume: 0.25});
         let off = this.sound.add('off', {volume: 0.25});
@@ -120,9 +144,12 @@ class Scene extends Phaser.Scene{
         let snakeSound = this.sound.add('snake', {volume: .5});
         let openD = this.sound.add('openD', {volume: .5});
         let closeD = this.sound.add('closeD', {volume: .5});
+        let openH = this.sound.add('openH', {volume: .5});
+        let closeH = this.sound.add('closeH', {volume: .5});
+        let monster = this.sound.add('monster', {volume: .5});
 
 
-        let ambiance = this.sound.add('ambiance', {volume: .25});
+        let ambiance = this.sound.add('ambiance', {volume: .75});
         ambiance.loop = true
         ambiance.play()
 
@@ -210,6 +237,96 @@ class Scene extends Phaser.Scene{
             }
         }, this);
 
+        //Open/Close Trap Hole
+
+        this.input.keyboard.on('keydown-Y', function () {
+            if(holeOpen){
+                closeH.play();
+                this.hole.destroy()
+                this.hole1 = this.add.sprite(100, 350, 'hole1').setOrigin(0,0).setDepth(2)
+                holeOpen = false
+            }
+            else{
+                openH.play();
+                this.hole1.destroy()
+                this.hole = this.add.sprite(100, 350, 'hole2').setOrigin(0,0).setDepth(2)
+                holeOpen = true
+            }
+        }, this);
+
+        //Spawn Wardrobe
+
+        this.input.keyboard.on('keydown-U', function () {
+            if(wardrobeOpen){
+                bam4.play();
+                this.smoke(302.5, 225, 30, 1)
+                this.wardrobe.destroy()
+                if(wardrobeMonster){
+                    this.wardrobe1.destroy()
+                }
+                wardrobeOpen = false
+                wardrobeMonster = false
+            }
+            else{
+                bam5.play();
+                this.smoke(302.5, 225, 30, 2)
+                this.wardrobe = this.add.sprite(270, 170, 'wardrobe').setOrigin(0,0).setDepth(1)
+                wardrobeOpen = true
+            }
+        }, this);
+
+        //Open/Close the wardrobe
+
+        this.input.keyboard.on('keydown-I', function () {
+            if(wardrobeMonster){
+                bam1.play();
+                this.wardrobe1.destroy()
+                wardrobeMonster = false
+            }
+            else if(wardrobeOpen){
+                monster.play();
+                this.wardrobe1 = this.add.sprite(255, 170, 'wardrobe2').setOrigin(0,0).setDepth(1)
+                wardrobeMonster = true
+            }
+        }, this);
+
+        //Spawn TV
+
+        this.input.keyboard.on('keydown-O', function () {
+            if(tvSpawn){
+                bam3.play();
+                this.smoke(650, 310, 30, 1)
+                if (yves){
+                    this.yvesVideo.destroy()
+                }
+                this.tv.destroy()
+                tvSpawn = false
+                yves = false
+            }
+            else{
+                bam4.play();
+                this.smoke(650, 310, 30, 2)
+                this.tv = this.add.sprite(600, 260, 'tv').setOrigin(0,0).setDepth(1)
+                tvSpawn = true
+            }
+        }, this);
+
+        //Video on TV
+
+        this.input.keyboard.on('keydown-P', function () {
+            if(yves){
+                this.yvesVideo.destroy()
+                yves = false
+            }
+            else if(tvSpawn){
+                this.yvesVideo = this.add.video(644,315, 'yvesVid').setDepth(1)
+                this.yvesVideo.setScale(0.06)
+                this.yvesVideo.play(true)
+                yves = true
+            }
+        }, this);
+
+        //Light Off/On
 
         this.input.keyboard.on('keydown-Q', function () {
             if(lightOff){
@@ -221,6 +338,19 @@ class Scene extends Phaser.Scene{
                 off.play();
                 this.light = this.add.sprite(0, 0, 'lightOff').setOrigin(0,0).setDepth(100)
                 lightOff = true
+            }
+        }, this);
+
+        //Spawn Guy Window
+
+        this.input.keyboard.on('keydown-S', function () {
+            if(windowGuySpawn){
+                this.guy.destroy()
+                windowGuySpawn = false
+            }
+            else{
+                this.guy = this.add.sprite(200, 175, 'windowGuy').setOrigin(0,0).setDepth(0)
+                windowGuySpawn = true
             }
         }, this);
     }
