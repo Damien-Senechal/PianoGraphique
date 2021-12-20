@@ -252,7 +252,7 @@ class Scene extends Phaser.Scene{
         let textKeys = [
             'A','Z','E','R','T','Y','U','I','O','P','Q','S','D','F','G','H','J','K','L','M','W','X'
         ];
-        let text = this.add.text(370, 384, textKeys, {font : '32px Courier', fill : '#ffffff'})
+        let text = this.add.text(10, 10, textKeys, {font : '32px Courier', fill : '#ffffff'})
 
         if (this.sound.locked)
         {
@@ -557,15 +557,14 @@ class Scene extends Phaser.Scene{
 
             this.input.keyboard.on('keydown-J', function () {
                 if (carpetMonster) {
-
-                    if (carpetRoll) {
-                        this.carpetR.destroy()
-                    }
-                    carpetRoll = false
                     tapis1.play();
                     this.carpet.destroy()
                     carpetMonster = false
                 } else if (tapisSpawn) {
+                    if (carpetRoll) {
+                        this.carpetR.destroy()
+                    }
+                    carpetRoll = false
                     monster.play();
                     this.carpet = this.add.sprite(380, 300, 'carpetMonster').setOrigin(0, 0).setDepth(1)
                     carpetMonster = true
@@ -599,15 +598,15 @@ class Scene extends Phaser.Scene{
 
             this.input.keyboard.on('keydown-L', function () {
                 if (carpetRoll) {
-                    if (carpetMonster) {
-                        this.carpet.destroy()
-                    }
-                    carpetMonster = false
                     tapis2.play();
                     this.tapis = this.add.sprite(380, 300, 'tapis').setOrigin(0, 0).setDepth(1)
                     this.carpetR.destroy()
                     carpetRoll = false
                 } else if (tapisSpawn) {
+                    if (carpetMonster) {
+                        this.carpet.destroy()
+                    }
+                    carpetMonster = false
                     tapis1.play();
                     this.tapis.destroy()
                     this.carpetR = this.add.sprite(380, 300, 'carpetRoll').setOrigin(0, 0).setDepth(1)
